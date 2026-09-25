@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>🎁 إهداء خاص</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#2b0b45;
+    --bg2:#4a0f6f;
+    --bg3:#7b1fa2;
+    --card-front1:#7b2ff7;
+    --card-front2:#f353a2;
+    --card-back1:#ff9966;
+    --card-back2:#ff6fa5;
+    --text-light:#fff8f0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --bg1:#160526; --bg2:#33094f; --bg3:#5a1487; }
+  }
+  :root[data-theme="dark"]{ --bg1:#160526; --bg2:#33094f; --bg3:#5a1487; }
+
+  *{ box-sizing:border-box; }
+
+  html,body{ height:100%; margin:0; padding:0; }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+
+  body{
+    font-family:'Tajawal','Baloo Bhaijaan 2', sans-serif;
+    min-height:100%;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,215,106,.18), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255,111,165,.25), transparent 45%),
+      linear-gradient(140deg, var(--bg1), var(--bg2) 45%, var(--bg3) 100%);
+    background-attachment:fixed;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden;
+    position:relative;
+    padding-top:calc(24px + env(safe-area-inset-top,0px));
+    padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
+    padding-inline:16px;
+    color:var(--text-light);
+  }
+
+  .bg-sparkle{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .bg-sparkle span{
+    position:absolute;
+    font-size:18px;
+    opacity:.35;
+    animation:floatUp linear infinite;
+    filter:drop-shadow(0 0 6px rgba(255,255,255,.4));
+  }
+  @keyframes floatUp{
+    from{ transform:translateY(110vh) rotate(0deg); opacity:0; }
+    10%{ opacity:.5; }
+    90%{ opacity:.4; }
+    to{ transform:translateY(-10vh) rotate(360deg); opacity:0; }
+  }
+
+  .scene{
+    position:relative;
+    z-index:2;
+    width:min(88vw, 380px);
+    aspect-ratio: 3 / 4;
+    perspective:1600px;
+  }
+
+  .hint{
+    position:absolute;
+    bottom:calc(-56px - env(safe-area-inset-bottom,0px));
+    left:0; right:0;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:.5px;
+    color:rgba(255,255,255,.75);
+    animation:pulseHint 2s ease-in-out infinite;
+    white-space:nowrap;
+  }
+  @keyframes pulseHint{
+    0%,100%{ opacity:.55; transform:translateY(0); }
+    50%{ opacity:1; transform:translateY(-3px); }
+  }
+
+  .card{
+    position:relative;
+    width:100%;
+    height:100%;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform 1s cubic-bezier(.22,1,.36,1);
+    animation:gentleFloat 4s ease-in-out infinite;
+  }
+  .card.flipped{ transform:rotateY(180deg); animation:none; }
+  @keyframes gentleFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+  }
+
+  .face{
+    position:absolute;
+    inset:0;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
+    border-radius:26px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:32px 22px;
+    box-shadow:0 25px 60px -15px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset;
+    overflow:hidden;
+  }
+
+  .face::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,.35), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(255,255,255,.18), transparent 40%);
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+
+  .front{
+    background:linear-gradient(155deg, var(--card-front1), var(--card-front2));
+    border:2px solid rgba(255,255,255,.25);
+  }
+
+  .back{
+    background:linear-gradient(155deg, var(--card-back1), var(--card-back2));
+    transform:rotateY(180deg);
+    border:2px solid rgba(255,255,255,.3);
+  }
+
+  .ribbon{
+    position:absolute;
+    top:-2px; left:50%;
+    transform:translateX(-50%);
+    width:26%; height:100%;
+    background:linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,.08), rgba(255,255,255,.35));
+    opacity:.5;
+  }
+  .ribbon.horizontal{
+    width:100%; height:22%;
+    top:50%; left:0;
+    transform:translateY(-50%);
+    background:linear-gradient(0deg, rgba(255,255,255,.35), rgba(255,255,255,.08), rgba(255,255,255,.35));
+  }
+
+  .gift-emoji{
+    font-size:64px;
+    margin-bottom:18px;
+    animation:wiggle 1.8s ease-in-out infinite;
+    filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
+  }
+  @keyframes wiggle{
+    0%,100%{ transform:rotate(-6deg) scale(1); }
+    50%{ transform:rotate(6deg) scale(1.06); }
+  }
+
+  .front-text{
+    position:relative;
+    font-weight:900;
+    font-size:clamp(20px, 5.5vw, 27px);
+    line-height:1.7;
+    text-shadow:0 4px 14px rgba(0,0,0,.35);
+  }
+
+  .front-sub{
+    position:relative;
+    margin-top:14px;
+    font-size:13px;
+    font-weight:500;
+    color:rgba(255,255,255,.8);
+    letter-spacing:.5px;
+  }
+
+  .back-heart{
+    font-size:40px;
+    margin-bottom:10px;
+    animation:heartbeat 1.4s ease-in-out infinite;
+  }
+  @keyframes heartbeat{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.15); }
+  }
+
+  .to-name{
+    position:relative;
+    font-weight:800;
+    font-size:clamp(22px, 6vw, 30px);
+    margin-bottom:16px;
+    text-shadow:0 4px 14px rgba(0,0,0,.3);
+  }
+
+  .message{
+    position:relative;
+    font-size:clamp(15px, 4vw, 18px);
+    font-weight:500;
+    line-height:2;
+    color:var(--text-light);
+    max-width:90%;
+  }
+
+  .stars{
+    position:relative;
+    margin-top:18px;
+    font-size:18px;
+    letter-spacing:6px;
+  }
+
+  #confetti-layer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:5;
+  }
+  .confetti-piece{
+    position:absolute;
+    top:-40px;
+    font-weight:800;
+    white-space:nowrap;
+    user-select:none;
+    will-change:transform, opacity;
+  }
+  .confetti-ribbon{
+    position:absolute;
+    top:-40px;
+    border-radius:2px;
+    will-change:transform, opacity;
+  }
+
+  @media (max-width:380px){
+    .scene{ width:92vw; }
+  }
+
+  .footer{
+    position:fixed;
+    left:0; right:0;
+    bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    z-index:3;
+    text-align:center;
+    pointer-events:none;
+  }
+  .footer .from{
+    font-size:13px;
+    font-weight:500;
+    color:rgba(255,255,255,.7);
+    letter-spacing:.5px;
+  }
+  .footer .name{
+    font-size:19px;
+    font-weight:800;
+    color:#ffe9b0;
+    text-shadow:0 3px 10px rgba(0,0,0,.4);
+    margin-top:2px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-sparkle" id="bgSparkle"></div>
+
+  <div class="scene">
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="ribbon"></div>
+        <div class="ribbon horizontal"></div>
+        <div class="gift-emoji">🎁</div>
+        <div class="front-text">🎁 لديك إهداء خاص 🎁</div>
+        <div class="front-sub">المس البطاقة لفتح المفاجأة</div>
+      </div>
+      <div class="face back">
+        <div class="back-heart">💖</div>
+        <div class="to-name">إلى الغالية نورة</div>
+        <div class="message">بمناسبة تخرجك أهديك هذه الهدية البسيطة<br>وأتمنى لك كل الخير والتوفيق</div>
+        <div class="stars">✨ 🎓 ✨</div>
+      </div>
+    </div>
+    <div class="hint" id="hint">👆 اضغطي على الكرت لفتح المفاجأة</div>
+  </div>
+
+  <div id="confetti-layer"></div>
+
+  <div class="footer">
+    <div class="from">إهداء من</div>
+    <div class="name">حصة</div>
+  </div>
+
+<script>
+  const card = document.getElementById('card');
+  const hint = document.getElementById('hint');
+  const confettiLayer = document.getElementById('confetti-layer');
+  const bgSparkle = document.getElementById('bgSparkle');
+
+  let flipped = false;
+  let confettiInterval = null;
+
+  const sparkleChars = ['✨','⭐','🎓','💫'];
+  function spawnBgSparkle(){
+    const s = document.createElement('span');
+    s.textContent = sparkleChars[Math.floor(Math.random()*sparkleChars.length)];
+    s.style.left = Math.random()*100 + 'vw';
+    const duration = 6 + Math.random()*6;
+    s.style.animationDuration = duration + 's';
+    s.style.fontSize = (14 + Math.random()*14) + 'px';
+    bgSparkle.appendChild(s);
+    setTimeout(()=> s.remove(), duration*1000 + 500);
+  }
+  setInterval(spawnBgSparkle, 700);
+  for(let i=0;i<8;i++) setTimeout(spawnBgSparkle, i*250);
+
+  const confettiWords = ['Demir', 'ديمير'];
+  const confettiColors = ['#ffd76a','#ff6fa5','#7b2ff7','#f353a2','#ff9966','#6fe3ff','#9dff6f','#ffffff'];
+
+  function animateFall(piece, extraRotate){
+    const fallDuration = 4 + Math.random()*3.5;
+    const rotateAmount = extraRotate + (Math.random()*720 - 360);
+    const drift = (Math.random()*160 - 80);
+
+    piece.style.opacity = '0.95';
+    piece.style.transform = 'translate(0,0) rotate(0deg)';
+    piece.style.transition = 'none';
+
+    confettiLayer.appendChild(piece);
+
+    requestAnimationFrame(()=>{
+      piece.style.transition = `transform ${fallDuration}s cubic-bezier(.25,.46,.45,.94), opacity ${fallDuration}s ease-in`;
+      piece.style.transform = `translate(${drift}px, 110vh) rotate(${rotateAmount}deg)`;
+      piece.style.opacity = '0';
+    });
+
+    setTimeout(()=> piece.remove(), fallDuration*1000 + 200);
+  }
+
+  function spawnWordOrShape(){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    // كلمات Demir / ديمير تمثل 10% فقط من القصاصات
+    const isWord = Math.random() < 0.10;
+    if(isWord){
+      piece.textContent = confettiWords[Math.floor(Math.random()*confettiWords.length)];
+      piece.style.fontSize = (14 + Math.random()*12) + 'px';
+    } else {
+      const shapes = ['●','▲','■','★'];
+      piece.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+      piece.style.fontSize = (10 + Math.random()*10) + 'px';
+    }
+    piece.style.color = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+    piece.style.left = Math.random()*100 + 'vw';
+    piece.style.textShadow = '0 2px 6px rgba(0,0,0,.25)';
+    animateFall(piece, 0);
+  }
+
+  function spawnRibbon(){
+    const ribbon = document.createElement('div');
+    ribbon.className = 'confetti-ribbon';
+    const width = 5 + Math.random()*4;
+    const height = 14 + Math.random()*14;
+    ribbon.style.width = width + 'px';
+    ribbon.style.height = height + 'px';
+    ribbon.style.left = Math.random()*100 + 'vw';
+    ribbon.style.background = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+    ribbon.style.boxShadow = '0 2px 6px rgba(0,0,0,.2)';
+    animateFall(ribbon, 300);
+  }
+
+  function spawnConfettiPiece(){
+    // 60% أشرطة مبهجة، والباقي أشكال وكلمات (الكلمات 10% من الإجمالي)
+    if(Math.random() < 0.6){
+      spawnRibbon();
+    } else {
+      spawnWordOrShape();
+    }
+  }
+
+  function startConfetti(){
+    if(confettiInterval) return;
+    for(let i=0;i<30;i++){
+      setTimeout(spawnConfettiPiece, i*40);
+    }
+    confettiInterval = setInterval(spawnConfettiPiece, 200);
+  }
+
+  card.addEventListener('click', ()=>{
+    flipped = !flipped;
+    card.classList.toggle('flipped', flipped);
+    if(flipped){
+      hint.style.display = 'none';
+      startConfetti();
+    } else {
+      hint.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
